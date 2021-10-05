@@ -30,7 +30,7 @@ After creating the stream, it iterates the stream.  This is might show the effic
 
 StreamBuilderBench
 
-```bench::benchMark1.txt
+```bench::StreamBuilderBench.txt
 Benchmark                                     (size)             (strategy)   Mode  Cnt   Score   Error  Units
 StreamBuilderBench.buildTheStream            1000000             ARRAY_LIST  thrpt       17.791          ops/s
 StreamBuilderBench.buildTheStream            1000000  ARRAY_LIST_KNOWN_SIZE  thrpt       31.290          ops/s

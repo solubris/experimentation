@@ -26,11 +26,11 @@ function replace() {
   :b
   /```$/!{N;bb
   }
-  '$1'
+  s/'$bench_file_name'.*```/'$bench_file_name'xxx```/
 }' "$md_file"
 }
 
-replace "s/$bench_file_name/xxx/"
+replace $bench_file_name
 
 echo replaced file:
 cat "$md_file"
