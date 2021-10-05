@@ -1,6 +1,7 @@
 package com.solubris.experimentation.streams.building;
 
 import com.solubris.typedtuples.mutable.MutableTuple;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Warmup(iterations = 4)
 @Measurement(iterations = 3)
-public class StreamBuilderBenchmark {
+public class StreamBuilderBench {
 
     @State(Scope.Benchmark)
     public static class TheState {
@@ -147,9 +148,15 @@ public class StreamBuilderBenchmark {
         return buffer.build();
     }
 
+    @Test
+    @Tag("jmh")
+    void run() throws RunnerException {
+        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
+    }
+
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
-                .include(StreamBuilderBenchmark.class.getSimpleName())
+                .include(StreamBuilderBench.class.getSimpleName())
                 .forks(1)
 //                .addProfiler("gc")
 //                .jvmArgs("-ea")

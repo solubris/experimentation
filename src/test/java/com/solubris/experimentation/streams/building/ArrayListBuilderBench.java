@@ -1,22 +1,17 @@
 package com.solubris.experimentation.streams.building;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Warmup(iterations = 4)
 @Measurement(iterations = 3)
-public class ArrayBuilderBenchmark {
+public class ArrayListBuilderBench {
 
     @State(Scope.Benchmark)
     public static class TheState {
@@ -65,23 +60,23 @@ public class ArrayBuilderBenchmark {
 
     public enum Strategy {
         ARRAY_LIST {
-            public Long[] run(TheState state, Blackhole blackhole) {
-                Long[] result = arrayListToArray(state.size);
+            public List<Long> run(TheState state, Blackhole blackhole) {
+                List<Long> result = arrayList(state.size);
                 assertThat(result)
                         .isNotNull();
                 return result;
             }
         },
         STREAM_BUILDER {
-            public Long[] run(TheState state, Blackhole blackhole) {
-                Long[] result = streamBuilderToArray(state.size);
+            public List<Long> run(TheState state, Blackhole blackhole) {
+                List<Long> result = streamBuilderToArrayList(state.size);
                 assertThat(result)
                         .isNotNull();
                 return result;
             }
         };
 
-        public abstract Long[] run(TheState state, Blackhole blackhole);
+        public abstract List<Long> run(TheState state, Blackhole blackhole);
     }
 
     @Benchmark
@@ -114,43 +109,49 @@ public class ArrayBuilderBenchmark {
 //        state.report();
 //    }
 
-    private static Long[] arrayListToArray(int size) {
-        List<Long> buffer = new ArrayList<>();
-        for (long i = 0; i < size; i++) {
-            buffer.add(i);
-        }
-        // better use size 0 or presized array?
-        return buffer.toArray(new Long[0]);
-    }
-
     @Test
     void canBuildTheDataFromArrayList() {
-        Long[] result = arrayListToArray(1000);
-        long count = result.length;
+        List<Long> result = arrayList(1000);
+        long count = result.size();
 
         assertThat(count).isEqualTo(1000);
     }
 
-    private static Long[] streamBuilderToArray(int size) {
+    private static List<Long> arrayList(int size) {
+        List<Long> buffer = new ArrayList<>();
+        for (long i = 0; i < size; i++) {
+            buffer.add(i);
+        }
+        return buffer;
+    }
+
+    @Test
+    void canBuildTheDataFromStreamBuilder() {
+        List<Long> result = streamBuilderToArrayList(1000);
+        long count = result.size();
+
+        assertThat(count).isEqualTo(1000);
+    }
+
+    private static List<Long> streamBuilderToArrayList(int size) {
         Stream.Builder<Long> buffer = Stream.builder();
         for (long i = 0; i < size; i++) {
             buffer.add(i);
         }
         // array copy not used here
-        return buffer.build().toArray(Long[]::new);
+        Long[] longs = buffer.build().toArray(Long[]::new);
+        return Arrays.asList(longs);
     }
 
     @Test
-    void canBuildTheDataFromStreamBuilder() {
-        Long[] result = streamBuilderToArray(1000);
-        long count = result.length;
-
-        assertThat(count).isEqualTo(1000);
+    @Tag("jmh")
+    void run() throws RunnerException {
+        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
     }
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
-                .include(ArrayBuilderBenchmark.class.getSimpleName())
+                .include(ArrayListBuilderBench.class.getSimpleName())
                 .forks(1)
 //                .addProfiler("gc")
 //                .jvmArgs("-ea")
