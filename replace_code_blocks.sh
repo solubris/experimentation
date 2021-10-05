@@ -12,4 +12,25 @@ bench_file_name=${bench_file##*/}
 
 echo bench_file_name=$bench_file_name
 
-sed -v
+# Handle the different ways of running `sed` without generating a backup file based on OS
+# - GNU sed (Linux) uses `-i`
+# - BSD sed (macOS) uses `-i ''`
+SED_OPTIONS=(-i -e)
+case "$(uname)" in
+Darwin*) SED_OPTIONS=(-i "" -e) ;;
+esac
+
+function replace() {
+  sed -E "${SED_OPTIONS[@]}" '
+/```bench::'"$1"'/{
+  :b
+  /```$/!{N;bb
+  }
+  '$1'
+}' "$md_file"
+}
+
+replace "s/$bench_file_name/xxx/"
+
+echo replaced file:
+cat "$md_file"

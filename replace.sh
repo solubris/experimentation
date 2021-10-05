@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
-
 shopt -s nullglob
 shopt -s globstar
 setopt extended_glob
+
+set -eo pipefail
 
 sp=$(dirname "$0")
 
