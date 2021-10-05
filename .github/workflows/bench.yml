@@ -2,7 +2,7 @@ name: Bench
 on:
   workflow_dispatch:
     inputs:
-      benchmakr:
+      benchmark:
         description: Which benchmark to run
         required: false
 
@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        repository: solubris/experimentation.wiki
+        path: wiki
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -25,3 +29,6 @@ jobs:
       with:
         name: jmh-report
         path: target/jmh-report
+
+
+

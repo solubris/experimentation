@@ -30,6 +30,7 @@ After creating the stream, it iterates the stream.  This is might show the effic
 
 StreamBuilderBench
 
+```bench::benchMark1.txt
 Benchmark                                     (size)             (strategy)   Mode  Cnt   Score   Error  Units
 StreamBuilderBench.buildTheStream            1000000             ARRAY_LIST  thrpt       17.791          ops/s
 StreamBuilderBench.buildTheStream            1000000  ARRAY_LIST_KNOWN_SIZE  thrpt       31.290          ops/s
@@ -37,6 +38,7 @@ StreamBuilderBench.buildTheStream            1000000         STREAM_BUILDER  thr
 StreamBuilderBench.buildTheStreamAndCountIt  1000000             ARRAY_LIST  thrpt       15.326          ops/s
 StreamBuilderBench.buildTheStreamAndCountIt  1000000  ARRAY_LIST_KNOWN_SIZE  thrpt       24.444          ops/s
 StreamBuilderBench.buildTheStreamAndCountIt  1000000         STREAM_BUILDER  thrpt       21.554          ops/s
+```
 
 This shows how much more efficient using a stream build is to build a stream of unknown size than using an array list.
 The ARRAY_LIST_KNOWN_SIZE strategy shows what happens if the array list of a known size.
