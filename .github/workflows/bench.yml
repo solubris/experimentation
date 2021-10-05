@@ -1,5 +1,10 @@
 name: Bench
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      benchmakr:
+        description: Which benchmark to run
+        required: false
 
 jobs:
   build:
