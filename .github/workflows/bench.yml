@@ -34,6 +34,8 @@ jobs:
       run: |
         cd wiki
         $GITHUB_WORKSPACE/replace.sh $GITHUB_WORKSPACE/target/jmh-report/*
-
+        git add .
+        git commit -m "updated benchmarks"
+        git push
 
 
