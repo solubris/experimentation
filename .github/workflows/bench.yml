@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/checkout@v2
-      with:
-        repository: solubris/experimentation.wiki
-        path: wiki
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -29,6 +25,15 @@ jobs:
       with:
         name: jmh-report
         path: target/jmh-report
+    - name: Checkout wiki
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}.wiki
+        path: wiki
+    - name: Replace wiki code blocks
+      run: |
+        cd wiki
+        ~/replace_code_blocks.sh ~/target/jmh-report/*
 
 
 
