@@ -8,4 +8,8 @@ md_file=$2
 
 echo "replacing blocks for $bench_file in $md_file"
 
+bench_file_name=${bench_file##*/}
+
+echo bench_file_name=$bench_file_name
+
 sed -v
