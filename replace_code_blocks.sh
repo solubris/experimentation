@@ -20,17 +20,24 @@ case "$(uname)" in
 Darwin*) SED_OPTIONS=(-i "" -e) ;;
 esac
 
+# multiline match to find full code block ```...```
+# remove text after start of block
+# read from $bench_file and append after start of block
+# append ``` to complete the block as it was removed earlier
 function replace() {
   sed -E "${SED_OPTIONS[@]}" '
-/```bench::'"$1"'/{
+/```bench::'"$bench_file_name"'/{
   :b
   /```$/!{N;bb
   }
-  s/'$bench_file_name'.*```/'$bench_file_name'xxx```/
+  s/(```bench::'$bench_file_name').*```/\1/;{r'$bench_file'
+  a\
+  ```
+  }
 }' "$md_file"
 }
 
-replace $bench_file_name
+replace
 
 echo replaced file:
 cat "$md_file"
