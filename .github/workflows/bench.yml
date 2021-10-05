@@ -10,9 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: What's in the event for a workflow_dispatch
-      run: |
-        cat $GITHUB_EVENT_PATH
     - uses: actions/checkout@v2
     - name: Set up JDK 11
       uses: actions/setup-java@v2
@@ -37,6 +34,9 @@ jobs:
       run: |
         cd wiki
         $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/jmh-report/*
+        # TODO is it possible to set from whoever triggered the job?
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         git add .
         git commit -m "updated benchmarks"
         git push
