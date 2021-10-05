@@ -13,7 +13,7 @@ public class JmhHelper {
         return new OptionsBuilder()
                 .include(aClass.getSimpleName())
                 .forks(1)
-                .warmupIterations(0)
+                .warmupIterations(1)
                 .measurementIterations(1)
 //                .addProfiler("gc")
 //                .jvmArgs("-ea")

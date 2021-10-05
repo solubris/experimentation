@@ -74,6 +74,14 @@ public class StreamBuilderBench {
                 return result;
             }
         },
+        ARRAY_LIST_KNOWN_SIZE {
+            public Stream<Long> run(TheState state, Blackhole blackhole) {
+                Stream<Long> result = arrayListStreamWithKnownSize(state.size);
+                assertThat(result)
+                        .isNotNull();
+                return result;
+            }
+        },
         STREAM_BUILDER {
             public Stream<Long> run(TheState state, Blackhole blackhole) {
                 Stream<Long> result = streamBuilder(state.size);
@@ -116,14 +124,6 @@ public class StreamBuilderBench {
 //        state.report();
 //    }
 
-    @Test
-    void canBuildTheDataFromArrayList() {
-        Stream<Long> result = arrayListStream(1000);
-        long count = result.count();
-
-        assertThat(count).isEqualTo(1000);
-    }
-
     private static Stream<Long> arrayListStream(int size) {
         List<Long> buffer = new ArrayList<>();
         for (long i = 0; i < size; i++) {
@@ -133,8 +133,24 @@ public class StreamBuilderBench {
     }
 
     @Test
-    void canBuildTheDataFromStreamBuilder() {
-        Stream<Long> result = streamBuilder(1000);
+    void canBuildTheDataFromArrayList() {
+        Stream<Long> result = arrayListStream(1000);
+        long count = result.count();
+
+        assertThat(count).isEqualTo(1000);
+    }
+
+    private static Stream<Long> arrayListStreamWithKnownSize(int size) {
+        List<Long> buffer = new ArrayList<>(size);
+        for (long i = 0; i < size; i++) {
+            buffer.add(i);
+        }
+        return buffer.stream();
+    }
+
+    @Test
+    void canBuildTheDataFromArrayListWithKnownSize() {
+        Stream<Long> result = arrayListStreamWithKnownSize(1000);
         long count = result.count();
 
         assertThat(count).isEqualTo(1000);
@@ -146,6 +162,14 @@ public class StreamBuilderBench {
             buffer.add(i);
         }
         return buffer.build();
+    }
+
+    @Test
+    void canBuildTheDataFromStreamBuilder() {
+        Stream<Long> result = streamBuilder(1000);
+        long count = result.count();
+
+        assertThat(count).isEqualTo(1000);
     }
 
     @Test
