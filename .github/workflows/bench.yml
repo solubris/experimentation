@@ -1,3 +1,4 @@
+name: Bench
 on: [workflow_dispatch]
 
 jobs:
