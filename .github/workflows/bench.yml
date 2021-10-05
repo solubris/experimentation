@@ -5,6 +5,7 @@ on:
       benchmark:
         description: Which benchmark to run
         required: false
+        default: .*
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn test
+        mvn compile exec:exec -Djmh.benchmark=${{ inputs.benchmark }}"
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
@@ -35,11 +36,8 @@ jobs:
         cd wiki
         $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/jmh-report/*
         # TODO is it possible to set from whoever triggered the job?
-        git config user.name github-actions
+        git config user.name $GITHUB_ACTOR
         git config user.email github-actions@github.com
         git add .
-        git commit -m "updated benchmarks"
+        git commit -m "updated benchmarks for $GITHUB_WORKFLOW-$GITHUB_RUN_NUMBER"
         git push
-        cat $GITHUB_EVENT_PATH
-
-

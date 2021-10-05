@@ -1,7 +1,6 @@
 package com.solubris.experimentation.streams.building;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import com.solubris.typedtuples.mutable.MutableTuple;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
@@ -9,17 +8,13 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Warmup(iterations = 4)
 @Measurement(iterations = 3)
-public class ArrayListBuilderBench {
+public class StreamBuilderBench {
 
     @State(Scope.Benchmark)
     public static class TheState {
@@ -60,23 +55,28 @@ public class ArrayListBuilderBench {
 
     public enum Strategy {
         ARRAY_LIST {
-            public List<Long> run(TheState state, Blackhole blackhole) {
-                List<Long> result = arrayList(state.size);
-                assertThat(result)
-                        .isNotNull();
+            public Stream<Long> run(TheState state, Blackhole blackhole) {
+                Stream<Long> result = arrayListStream(state.size);
+                assert result != null;
+                return result;
+            }
+        },
+        ARRAY_LIST_KNOWN_SIZE {
+            public Stream<Long> run(TheState state, Blackhole blackhole) {
+                Stream<Long> result = arrayListStreamWithKnownSize(state.size);
+                assert result != null;
                 return result;
             }
         },
         STREAM_BUILDER {
-            public List<Long> run(TheState state, Blackhole blackhole) {
-                List<Long> result = streamBuilderToArrayList(state.size);
-                assertThat(result)
-                        .isNotNull();
+            public Stream<Long> run(TheState state, Blackhole blackhole) {
+                Stream<Long> result = streamBuilder(state.size);
+                assert result != null;
                 return result;
             }
         };
 
-        public abstract List<Long> run(TheState state, Blackhole blackhole);
+        public abstract Stream<Long> run(TheState state, Blackhole blackhole);
     }
 
     @Benchmark
@@ -85,15 +85,14 @@ public class ArrayListBuilderBench {
         strategy.run(state, blackhole);
     }
 
-//    @Benchmark
-//    public void buildTheStreamAndCountIt(TheState state, Blackhole blackhole) {
-//        Strategy strategy = state.strategy;
-//        Long[] result = strategy.run(state, blackhole);
-//        var count = MutableTuple.of(0L);
-//        result.forEach(l -> count.compute(c -> c + 1));
-//        assertThat(count.get())
-//                .isEqualTo(state.size);
-//    }
+    @Benchmark
+    public void buildTheStreamAndCountIt(TheState state, Blackhole blackhole) {
+        Strategy strategy = state.strategy;
+        Stream<Long> result = strategy.run(state, blackhole);
+        var count = MutableTuple.of(0L);
+        result.forEach(l -> count.compute(c -> c + 1));
+        assert count.get() == state.size;
+    }
 
 //    @Test
 //    public void canCount() {
@@ -109,49 +108,33 @@ public class ArrayListBuilderBench {
 //        state.report();
 //    }
 
-    @Test
-    void canBuildTheDataFromArrayList() {
-        List<Long> result = arrayList(1000);
-        long count = result.size();
-
-        assertThat(count).isEqualTo(1000);
-    }
-
-    private static List<Long> arrayList(int size) {
+    static Stream<Long> arrayListStream(int size) {
         List<Long> buffer = new ArrayList<>();
         for (long i = 0; i < size; i++) {
             buffer.add(i);
         }
-        return buffer;
+        return buffer.stream();
     }
 
-    @Test
-    void canBuildTheDataFromStreamBuilder() {
-        List<Long> result = streamBuilderToArrayList(1000);
-        long count = result.size();
-
-        assertThat(count).isEqualTo(1000);
+    static Stream<Long> arrayListStreamWithKnownSize(int size) {
+        List<Long> buffer = new ArrayList<>(size);
+        for (long i = 0; i < size; i++) {
+            buffer.add(i);
+        }
+        return buffer.stream();
     }
 
-    private static List<Long> streamBuilderToArrayList(int size) {
+    static Stream<Long> streamBuilder(int size) {
         Stream.Builder<Long> buffer = Stream.builder();
         for (long i = 0; i < size; i++) {
             buffer.add(i);
         }
-        // array copy not used here
-        Long[] longs = buffer.build().toArray(Long[]::new);
-        return Arrays.asList(longs);
-    }
-
-    @Test
-    @Tag("jmh")
-    void run() throws RunnerException {
-        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
+        return buffer.build();
     }
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
-                .include(ArrayListBuilderBench.class.getSimpleName())
+                .include(StreamBuilderBench.class.getSimpleName())
                 .forks(1)
 //                .addProfiler("gc")
 //                .jvmArgs("-ea")

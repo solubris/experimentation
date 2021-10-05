@@ -1,16 +1,6 @@
 package com.solubris.experimentation.streams.building;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -20,8 +10,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Warmup(iterations = 4)
 @Measurement(iterations = 3)
@@ -68,16 +56,12 @@ public class ArrayBuilderBench {
         ARRAY_LIST {
             public Long[] run(TheState state, Blackhole blackhole) {
                 Long[] result = arrayListToArray(state.size);
-                assertThat(result)
-                        .isNotNull();
                 return result;
             }
         },
         STREAM_BUILDER {
             public Long[] run(TheState state, Blackhole blackhole) {
                 Long[] result = streamBuilderToArray(state.size);
-                assertThat(result)
-                        .isNotNull();
                 return result;
             }
         };
@@ -115,7 +99,7 @@ public class ArrayBuilderBench {
 //        state.report();
 //    }
 
-    private static Long[] arrayListToArray(int size) {
+    static Long[] arrayListToArray(int size) {
         List<Long> buffer = new ArrayList<>();
         for (long i = 0; i < size; i++) {
             buffer.add(i);
@@ -124,35 +108,13 @@ public class ArrayBuilderBench {
         return buffer.toArray(new Long[0]);
     }
 
-    @Test
-    void canBuildTheDataFromArrayList() {
-        Long[] result = arrayListToArray(1000);
-        long count = result.length;
-
-        assertThat(count).isEqualTo(1000);
-    }
-
-    private static Long[] streamBuilderToArray(int size) {
+    static Long[] streamBuilderToArray(int size) {
         Stream.Builder<Long> buffer = Stream.builder();
         for (long i = 0; i < size; i++) {
             buffer.add(i);
         }
         // array copy not used here
         return buffer.build().toArray(Long[]::new);
-    }
-
-    @Test
-    void canBuildTheDataFromStreamBuilder() {
-        Long[] result = streamBuilderToArray(1000);
-        long count = result.length;
-
-        assertThat(count).isEqualTo(1000);
-    }
-
-    @Test
-    @Tag("jmh")
-    void run() throws RunnerException {
-        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
     }
 
     public static void main(String[] args) throws RunnerException {
