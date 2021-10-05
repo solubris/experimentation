@@ -74,7 +74,7 @@
     <properties>
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.32</jmh.version>
+        <jmh.version>1.33</jmh.version>
 
         <!--
             Java source/target to use for compilation.
