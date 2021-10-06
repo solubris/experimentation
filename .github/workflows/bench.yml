@@ -20,7 +20,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn compile exec:exec -Djmh.benchmark=${{ inputs.benchmark }}"
+        mvn compile exec:exec -Djmh.benchmark=${{ inputs.benchmark }}
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
