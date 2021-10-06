@@ -10,6 +10,10 @@ on:
         description: Number of measurement iterations
         required: false
         default: '3'
+      size:
+        description: Size of data set, comma delimited for multiple
+        required: false
+        default: '1000000'
 
 jobs:
   build:
@@ -24,7 +28,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn compile exec:exec -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }}
+        mvn compile exec:exec -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.params="size=${{ github.event.inputs.iterations }}"
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:

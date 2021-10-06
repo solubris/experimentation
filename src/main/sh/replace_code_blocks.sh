@@ -31,11 +31,13 @@ function replace() {
 benchmark_blocks=($(sed -n -E 's/```bench::(.*)/\1/p' "$md_file"))
 
 for benchmark_block in ${benchmark_blocks[*]}; do
+# only include lines for the benchmark_block
+# also include the first line which has the columns
+sed -n -E "1p;/$benchmark_block/p" $bench_file > $bench_file.block
+
 # remove text after start of block
 # read from $bench_file and append after start of block
 # append ``` to complete the block as it was removed earlier
-sed -n -E "/$benchmark_block/p" $bench_file > $bench_file.block
-
 replace \
 's/(```bench::'$benchmark_block').*```/\1/;{r'$bench_file.block'
 a\
