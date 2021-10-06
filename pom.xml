@@ -80,6 +80,7 @@
         <jmh.fork>1</jmh.fork>
         <jmh.resultDir>${project.build.directory}/jmh-report</jmh.resultDir>
         <jmh.resultFormat>TEXT</jmh.resultFormat>
+        <jmh.params>size=20000,200000</jmh.params>
 
         <!--
             Java source/target to use for compilation.
@@ -100,6 +101,7 @@
                 <version>3.0.0-M5</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
@@ -137,6 +139,8 @@
                         <argument>${jmh.resultDir}/all.txt</argument>
                         <argument>-rf</argument>
                         <argument>${jmh.resultFormat}</argument>
+                        <argument>-p</argument>
+                        <argument>${jmh.params}</argument>
                     </arguments>
                 </configuration>
             </plugin>

@@ -5,7 +5,11 @@ on:
       benchmark:
         description: Which benchmark to run
         required: false
-        default: .*
+        default: '.*'
+      iterations:
+        description: Number of measurement iterations
+        required: false
+        default: '3'
 
 jobs:
   build:
@@ -20,7 +24,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn compile exec:exec -Djmh.benchmark=${{ github.event.inputs.benchmark }}
+        mvn compile exec:exec -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }}
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
