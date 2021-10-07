@@ -1,6 +1,10 @@
 # experimentation
 Explore various ideas through experimentation
 
+run from command line
+mvn clean compile exec:exec
+
+
 master has the template readme files
 docs has the replaced readme files
 ci updates the docs branch from master

@@ -72,6 +72,8 @@
     <properties>
         <!-- not compatible with the jvm matrix -->
 <!--        <maven.compiler.release>11</maven.compiler.release>-->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.33</jmh.version>
         <!-- default values for running benchmarks, these are overridden in the github action -->
@@ -142,8 +144,10 @@
                         <argument>${jmh.resultFormat}</argument>
                         <argument>-p</argument>
                         <argument>${jmh.params}</argument>
+<!-- Use a profiler
                         <argument>-prof</argument>
                         <argument>jfr</argument>
+-->
                     </arguments>
                 </configuration>
             </plugin>
