@@ -39,6 +39,6 @@ public class ArrayListBuilderBenchTest {
     @Test
     @Tag("jmh")
     void run() throws RunnerException {
-        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
+        new Runner(JmhHelper.jmhOptionsFor(ArrayListBuilderBench.class)).run();
     }
 }

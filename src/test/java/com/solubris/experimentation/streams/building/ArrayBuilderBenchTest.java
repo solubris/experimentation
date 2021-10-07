@@ -44,6 +44,6 @@ public class ArrayBuilderBenchTest {
     @Test
     @Tag("jmh")
     void run() throws RunnerException {
-        new Runner(JmhHelper.jmhOptionsFor(getClass())).run();
+        new Runner(JmhHelper.jmhOptionsFor(ArrayBuilderBench.class)).run();
     }
 }
