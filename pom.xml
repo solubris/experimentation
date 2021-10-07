@@ -70,7 +70,8 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
+        <!-- not compatible with the jvm matrix -->
+<!--        <maven.compiler.release>11</maven.compiler.release>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.33</jmh.version>
         <!-- default values for running benchmarks, these are overridden in the github action -->
