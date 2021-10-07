@@ -82,7 +82,8 @@ public class StreamBuilderBench {
     @Benchmark
     public void buildTheStream(TheState state, Blackhole blackhole) {
         Strategy strategy = state.strategy;
-        strategy.run(state, blackhole);
+        Stream<Long> result = strategy.run(state, blackhole);
+        assert result != null;
     }
 
     @Benchmark

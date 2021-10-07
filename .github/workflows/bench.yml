@@ -13,17 +13,23 @@ on:
       size:
         description: Size of data set, comma delimited for multiple
         required: false
-        default: '1000000'
+        default: '1,10,100,1000,10000,100000,1000000,10000000'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  bench:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        java: [8, 9] #[7, 8, 11, 16, 17-ea]
+        os: [ubuntu-latest] #[ubuntu-18.04, windows-2019, macos-10.15]
+      fail-fast: false
+    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: ${{ matrix.java }}
         distribution: 'adopt'
         cache: maven
     - name: Build and test with Maven

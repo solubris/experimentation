@@ -35,3 +35,34 @@ wiki won't trigger ci
 https://github.com/solubris/experimentation.wiki.git
 
 
+curChunk = (E[]) new Object[1 << initialChunkPower];
+initialChunkPower = 4
+1 << 1 = 2
+1 << 2 = 4
+1 << 3 = 8
+1 << 4 = 16
+
+starts with 8 spines
+8  - 16, 32, 64, 128, 256, 512, 1024, 2048 - 2^(8+3)
+16 - 524,288 - 2^(16+3)
+32 - 34,359,738,368 - 2^(32+3)
+
+worst case, spine arrays are copied twice
+
+what about these?
+ArrayBuilderBench
+ArrayListBuilderBench
+
+jmh profiles?
+Supported profilers:
+cl: Classloader profiling via standard MBeans
+comp: JIT compiler profiling via standard MBeans
+gc: GC profiling via standard MBeans
+jfr: Java Flight Recorder profiler
+pauses: Pauses profiler
+perfc2c: Linux perf c2c profiler
+safepoints: Safepoints profiler
+stack: Simple and naive Java stack profiler
+
+different jvm's?
+

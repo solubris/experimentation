@@ -73,14 +73,14 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.33</jmh.version>
-        <!-- default values for running benchmarks, can be overridden with -D -->
+        <!-- default values for running benchmarks, these are overridden in the github action -->
         <jmh.benchmark>.*</jmh.benchmark>
-        <jmh.iterations>3</jmh.iterations>
-        <jmh.warmupIterations>4</jmh.warmupIterations>
+        <jmh.iterations>2</jmh.iterations>
+        <jmh.warmupIterations>1</jmh.warmupIterations>
         <jmh.fork>1</jmh.fork>
         <jmh.resultDir>${project.build.directory}/jmh-report</jmh.resultDir>
         <jmh.resultFormat>TEXT</jmh.resultFormat>
-        <jmh.params>size=20000,200000</jmh.params>
+        <jmh.params>size=100000</jmh.params>
 
         <!--
             Java source/target to use for compilation.
@@ -141,6 +141,8 @@
                         <argument>${jmh.resultFormat}</argument>
                         <argument>-p</argument>
                         <argument>${jmh.params}</argument>
+                        <argument>-prof</argument>
+                        <argument>jfr</argument>
                     </arguments>
                 </configuration>
             </plugin>
