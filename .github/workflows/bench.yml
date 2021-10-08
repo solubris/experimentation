@@ -10,6 +10,10 @@ on:
         description: Number of measurement iterations
         required: false
         default: '3'
+      warmup-iterations:
+        description: Number of warmup iterations
+        required: false
+        default: '3'
       size:
         description: Size of data set, comma delimited for multiple
         required: false
@@ -34,7 +38,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn compile exec:exec -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.params="size=${{ github.event.inputs.size }}"
+        mvn compile exec:exec -Dmaven.compiler.source=${{ matrix.java }} -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.params="size=${{ github.event.inputs.size }}"
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
