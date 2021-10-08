@@ -24,7 +24,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        java: [8, 11] # [8, 11, 16, 17]
+        java: [8, 11, 16, 17]
         os: [ubuntu-latest] #[ubuntu-18.04, windows-2019, macos-10.15]
       fail-fast: false
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
@@ -59,9 +59,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         path: target
-    - name: Replace wiki code blocks
+    - name: Combine results into one file
       run: |
         $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
+    - name: Replace wiki code blocks
+      run: |
         cd wiki
         $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/all.txt
         # TODO is it possible to set from whoever triggered the job?

@@ -16,8 +16,13 @@ esac
 bench_files_dir=$1
 
 echo "combining files in $bench_files_dir"
+# TODO sort the dirs so output is consistent
 for bench_file in $bench_files_dir/**/*.txt; do
   echo "combining $bench_file into $bench_files_dir/all.txt"
+
+  # use the dirname as a prefix to the benchmark results
+  # this is currently the jdk, but could be something else in the future
+  # result will be JDK.8, JDK.11 etc
   bench_file_dir=${bench_file%/*} # strip filename
   bench_file_dir=${bench_file_dir##*/}  # strip parent dirs
   if [ ${#bench_file_dir} -lt 6 ]; then # add padding to ensure column alignment
