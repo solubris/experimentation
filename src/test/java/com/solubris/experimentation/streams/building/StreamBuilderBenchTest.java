@@ -14,7 +14,7 @@ public class StreamBuilderBenchTest {
 
     @Test
     void canBuildTheDataFromArrayList() {
-        Stream<Long> result = arrayListStream(1000);
+        Stream<Long> result = arrayListStream(1000, new Long[]{1L, 2L});
         long count = result.count();
 
         assertThat(count).isEqualTo(1000);
@@ -22,7 +22,7 @@ public class StreamBuilderBenchTest {
 
     @Test
     void canBuildTheDataFromArrayListWithKnownSize() {
-        Stream<Long> result = arrayListStreamWithKnownSize(1000);
+        Stream<Long> result = arrayListStreamWithKnownSize(1000, new Long[]{1L, 2L});
         long count = result.count();
 
         assertThat(count).isEqualTo(1000);
@@ -30,7 +30,7 @@ public class StreamBuilderBenchTest {
 
     @Test
     void canBuildTheDataFromStreamBuilder() {
-        Stream<Long> result = streamBuilder(1000);
+        Stream<Long> result = streamBuilder(1000, new Long[]{1L, 2L});
         long count = result.count();
 
         assertThat(count).isEqualTo(1000);

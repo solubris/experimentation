@@ -9,6 +9,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 @Warmup(iterations = 4)
@@ -27,6 +28,7 @@ public class StreamBuilderBench {
         //        @Param({"10000", "100000", "1000000", "10000000"})
         @Param({"1000000"})
         public int size;
+        public Long[] longs;
 
 //        @Param({"false", "true"})
 //        @Param({"true"})
@@ -34,12 +36,14 @@ public class StreamBuilderBench {
 
         @Setup(Level.Trial)
         public void setup() {
+            Random random = new Random();
+            longs = new Long[]{random.nextLong(), random.nextLong()};
+            expectedTotal = size;
 //            initialStealCount = ForkJoinPool.commonPool().getStealCount();
         }
 
         @Setup(Level.Invocation)
         public void prepare() {
-            expectedTotal = size;
         }
 
         @TearDown(Level.Invocation)
@@ -53,23 +57,23 @@ public class StreamBuilderBench {
     }
 
     public enum Strategy {
-        ARRAY_LIST {
+        UNSIZED_ARRAY_LIST {
             public Stream<Long> run(TheState state, Blackhole blackhole) {
-                Stream<Long> result = arrayListStream(state.size);
+                Stream<Long> result = arrayListStream(state.size, state.longs);
                 assert result != null;
                 return result;
             }
         },
-        ARRAY_LIST_KNOWN_SIZE {
+        SIZED_ARRAY_LIST {
             public Stream<Long> run(TheState state, Blackhole blackhole) {
-                Stream<Long> result = arrayListStreamWithKnownSize(state.size);
+                Stream<Long> result = arrayListStreamWithKnownSize(state.size, state.longs);
                 assert result != null;
                 return result;
             }
         },
         STREAM_BUILDER {
             public Stream<Long> run(TheState state, Blackhole blackhole) {
-                Stream<Long> result = streamBuilder(state.size);
+                Stream<Long> result = streamBuilder(state.size, state.longs);
                 assert result != null;
                 return result;
             }
@@ -81,6 +85,7 @@ public class StreamBuilderBench {
     @Benchmark
     public void buildTheStream(TheState state, Blackhole blackhole) {
         Strategy strategy = state.strategy;
+        assert state.longs.length % 2 == 0; // ensure bitwise and will work
         Stream<Long> result = strategy.run(state, blackhole);
         assert result != null;
     }
@@ -88,6 +93,7 @@ public class StreamBuilderBench {
     @Benchmark
     public void buildTheStreamAndCountIt(TheState state, Blackhole blackhole) {
         Strategy strategy = state.strategy;
+        assert state.longs.length % 2 == 0; // ensure bitwise and will work
         Stream<Long> result = strategy.run(state, blackhole);
         int[] countHolder = new int[1];
         result.forEach(l -> countHolder[0]++);
@@ -108,26 +114,26 @@ public class StreamBuilderBench {
 //        state.report();
 //    }
 
-    static Stream<Long> arrayListStream(int size) {
+    static Stream<Long> arrayListStream(int size, Long[] longs) {
         List<Long> buffer = new ArrayList<>();
-        for (long i = 0L; i < size; i++) {
-            buffer.add(i);
+        for (int i = 0; i < size; i++) {
+            buffer.add(longs[i & (longs.length-1)]);
         }
         return buffer.stream();
     }
 
-    static Stream<Long> arrayListStreamWithKnownSize(int size) {
+    static Stream<Long> arrayListStreamWithKnownSize(int size, Long[] longs) {
         List<Long> buffer = new ArrayList<>(size);
-        for (long i = 0L; i < size; i++) {
-            buffer.add(i);
+        for (int i = 0; i < size; i++) {
+            buffer.add(longs[i & (longs.length-1)]);
         }
         return buffer.stream();
     }
 
-    static Stream<Long> streamBuilder(int size) {
+    static Stream<Long> streamBuilder(int size, Long[] longs) {
         Stream.Builder<Long> buffer = Stream.builder();
-        for (long i = 0L; i < size; i++) {
-            buffer.add(i);
+        for (int i = 0; i < size; i++) {
+            buffer.add(longs[i & (longs.length-1)]);
         }
         return buffer.build();
     }
