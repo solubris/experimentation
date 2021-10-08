@@ -20,9 +20,12 @@ for bench_file in $bench_files_dir/**/*.txt; do
   echo "combining $bench_file into $bench_files_dir/all.txt"
   bench_file_dir=${bench_file%/*} # strip filename
   bench_file_dir=${bench_file_dir##*/}  # strip parent dirs
+  if [ ${#bench_file_dir} -lt 6 ]; then # add padding to ensure column alignment
+    bench_file_dir="$bench_file_dir "
+  fi
   echo "bench_file_dir=$bench_file_dir"
 
-  sed -E "${SED_OPTIONS[@]}" "s/^/$bench_file_dir /" $bench_file
+  sed -E "${SED_OPTIONS[@]}" -e "1s/^/JDK    /" -e "!1s/^/$bench_file_dir /" $bench_file
   cat $bench_file >> $bench_files_dir/all.txt
   rm -rf $bench_file
 done
