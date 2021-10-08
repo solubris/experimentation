@@ -49,19 +49,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Update the wiki
     steps:
-    - name: Retrieve saved results
-      uses: actions/download-artifact@v2
-      with:
-        path: target
     - uses: actions/checkout@v2
     - name: Checkout wiki
       uses: actions/checkout@v2
       with:
         repository: ${{ github.repository }}.wiki
         path: wiki
+    - name: Retrieve saved results
+      uses: actions/download-artifact@v2
+      with:
+        path: target
     - name: Replace wiki code blocks
       run: |
-        ls -alR $GITHUB_WORKSPACE/target
+        ls -alR $GITHUB_WORKSPACE
         $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
         cd wiki
         $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/all.txt
