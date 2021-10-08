@@ -61,7 +61,6 @@ jobs:
         path: target
     - name: Replace wiki code blocks
       run: |
-        ls -alR $GITHUB_WORKSPACE
         $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
         cd wiki
         $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/all.txt
