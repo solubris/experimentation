@@ -1,7 +1,5 @@
 package com.solubris.experimentation.streams.building;
 
-import com.solubris.typedtuples.mutable.MutableSingle;
-import com.solubris.typedtuples.mutable.MutableTuple;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
@@ -91,9 +89,9 @@ public class StreamBuilderBench {
     public void buildTheStreamAndCountIt(TheState state, Blackhole blackhole) {
         Strategy strategy = state.strategy;
         Stream<Long> result = strategy.run(state, blackhole);
-        MutableSingle<Long> count = MutableTuple.of(0L);
-        result.forEach(l -> count.compute(c -> c + 1));
-        assert count.get() == state.size;
+        int[] countHolder = new int[1];
+        result.forEach(l -> countHolder[0]++);
+        assert countHolder[0] == state.size;
     }
 
 //    @Test

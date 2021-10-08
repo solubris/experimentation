@@ -69,4 +69,9 @@ safepoints: Safepoints profiler
 stack: Simple and naive Java stack profiler
 
 different jvm's?
-
+each jvm is a separate run, so how to push results to wiki?
+need to pass the jvm into the scripts
+so it can be used for the replacement
+the jdk version will be required in code block,
+otherwise the different jvm jobs would overwrite each other
+it would be nice to have results from different jvm's in the one block, so they can be compared

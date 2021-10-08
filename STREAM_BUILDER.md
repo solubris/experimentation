@@ -30,7 +30,8 @@ After creating the stream, it iterates the stream.  This is might show the effic
 
 StreamBuilderBench
 
-```bench::StreamBuilderBench
+```bench::JDK 1.8|StreamBuilderBench
+```bench::StreamBuilderBench, JDK 1.8
 Benchmark                                     (size)             (strategy)   Mode  Cnt   Score   Error  Units
 StreamBuilderBench.buildTheStream            1000000             ARRAY_LIST  thrpt       17.791          ops/s
 StreamBuilderBench.buildTheStream            1000000  ARRAY_LIST_KNOWN_SIZE  thrpt       31.290          ops/s
