@@ -75,3 +75,16 @@ so it can be used for the replacement
 the jdk version will be required in code block,
 otherwise the different jvm jobs would overwrite each other
 it would be nice to have results from different jvm's in the one block, so they can be compared
+only way is to append a jvm column onto the results
+this should not be too hard to do
+easy to add the column, but how to combine the results from different jobs in one block?
+when replacing the block, it could match against the jvm and only replace those lines
+- extract block
+- remove lines matching jdk
+- append new lines for the jdk
+- sort lines - need to sort don't know where new lines fit in
+
+need to sort based on columns, csv would be better for this
+csv output won't look nice for the md files
+could use csv if there was a way to map to a table in the md file
+

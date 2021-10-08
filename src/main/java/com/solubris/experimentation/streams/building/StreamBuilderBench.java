@@ -110,7 +110,7 @@ public class StreamBuilderBench {
 
     static Stream<Long> arrayListStream(int size) {
         List<Long> buffer = new ArrayList<>();
-        for (long i = 0; i < size; i++) {
+        for (long i = 0L; i < size; i++) {
             buffer.add(i);
         }
         return buffer.stream();
@@ -118,7 +118,7 @@ public class StreamBuilderBench {
 
     static Stream<Long> arrayListStreamWithKnownSize(int size) {
         List<Long> buffer = new ArrayList<>(size);
-        for (long i = 0; i < size; i++) {
+        for (long i = 0L; i < size; i++) {
             buffer.add(i);
         }
         return buffer.stream();
@@ -126,7 +126,7 @@ public class StreamBuilderBench {
 
     static Stream<Long> streamBuilder(int size) {
         Stream.Builder<Long> buffer = Stream.builder();
-        for (long i = 0; i < size; i++) {
+        for (long i = 0L; i < size; i++) {
             buffer.add(i);
         }
         return buffer.build();
