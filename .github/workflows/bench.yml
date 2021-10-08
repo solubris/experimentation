@@ -42,7 +42,7 @@ jobs:
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
-        name: jmh-report-jdk-${{ matrix.java }}
+        name: JDK.${{ matrix.java }}
         path: target/jmh-report
   wiki:
     needs: bench
