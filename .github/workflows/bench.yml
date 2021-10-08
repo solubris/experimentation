@@ -57,5 +57,5 @@ jobs:
         git config user.name $GITHUB_ACTOR
         git config user.email github-actions@github.com
         git add .
-        git commit -m "updated benchmarks for $GITHUB_WORKFLOW-$GITHUB_RUN_NUMBER"
+        git commit -m "updated benchmarks for $GITHUB_WORKFLOW-$GITHUB_RUN_NUMBER JDK ${{ matrix.java }} on ${{ matrix.os }}"
         git push
