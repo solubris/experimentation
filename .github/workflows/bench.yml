@@ -53,6 +53,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         path: target/jmh-report
+    - uses: actions/checkout@v2
     - name: Checkout wiki
       uses: actions/checkout@v2
       with:
@@ -60,9 +61,9 @@ jobs:
         path: wiki
     - name: Replace wiki code blocks
       run: |
-        ls -al target/jmh-report
+        $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target/jmh-report
         cd wiki
-        $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/jmh-report/*
+        $GITHUB_WORKSPACE/src/main/sh/replace.sh $GITHUB_WORKSPACE/target/jmh-report/all.txt
         # TODO is it possible to set from whoever triggered the job?
         git config user.name $GITHUB_ACTOR
         git config user.email github-actions@github.com
