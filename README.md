@@ -88,3 +88,8 @@ need to sort based on columns, csv would be better for this
 csv output won't look nice for the md files
 could use csv if there was a way to map to a table in the md file
 
+Another way is to combine the results from all the jobs, eg:
+job2:
+needs: job1
+
+Will this wait for all the jobs to complete?
