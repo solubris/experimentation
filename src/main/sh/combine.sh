@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 shopt -s nullglob
 shopt -s globstar
@@ -8,9 +8,9 @@ set -eo pipefail
 
 sp=$(dirname "$0")
 
-SED_OPTIONS=(-i -e)
+SED_OPTIONS=(-i)
 case "$(uname)" in
-Darwin*) SED_OPTIONS=(-i "" -e) ;;
+Darwin*) SED_OPTIONS=(-i "") ;;
 esac
 
 bench_files_dir=$1
@@ -25,9 +25,8 @@ for bench_file in $bench_files_dir/**/*.txt; do
   fi
   echo "bench_file_dir=$bench_file_dir"
 
-  sed -E "${SED_OPTIONS[@]}" -e "1s/^/JDK    /" -e "!1s/^/$bench_file_dir /" $bench_file
+  sed -E "${SED_OPTIONS[@]}" -e "1s/^/JDK    /" -e '2,$s/^/'"$bench_file_dir"' /' "$bench_file"
   cat $bench_file >> $bench_files_dir/all.txt
-  rm -rf $bench_file
 done
 
 echo "resulting file:"
