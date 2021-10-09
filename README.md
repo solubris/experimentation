@@ -1,36 +1,36 @@
-# experimentation
+# Experimentation
 Explore various ideas through experimentation
 
-run from command line
-mvn clean compile exec:exec
+## Running
+To run the benchmarks from command line:
+
+    mvn clean compile exec:exec
+
+### GitHub Action
+
+There is a github action which can be triggered manually to run the benchmarks:
+
+https://github.com/solubris/experimentation/actions/workflows/bench.yml
+
+### CI
+
+The CI job runs tests for the benchmarks and runs them in an abbreviated manner.
+The should use the -ea flag to ensure the asserts are made, but this flag can be omitted for the real benchmarks so as not interfere with the results.
+
+## Reports
+
+Reports are writtem in md files.  Currently in the wiki (but not sure this is a good idea).
+
+### Result Injection
+
+The benchmark results can be injected into the wiki pages by embedding a code block as follows:
+
+    ```bench::StreamBuilderBench
+    ```
+
+Where StreamBuilderBench is the name of the benchmark.  This allows for the results to be replaced in a reentrant manner.
 
 
-master has the template readme files
-docs has the replaced readme files
-ci updates the docs branch from master
-
-must exclude the docs branch from ci
-
-Alternatively, could use wiki.  can push to the project wiki repo.
-but what about the replacement?
-still would be good to have two branches for that.
-even better would be able to replacement occur in a reentrant manner.
-so template tags would need to be invisible tokens in the pages.
-Can use html comments:
-<!--- just --->
-here's another [][comment]
-[comment]: # kjhklhljk
-could use a custom language, eg:
-
-```bench::benchMark1.txt
-dssdfssdf
-```
-
-but then cant have a table.  is that a problem?
-
-```
-dssdfssdf,asdasd,sdfdf,dfgdfg
-```
 
 This approach could also be used for the github pages.
 Which is better, wiki or github pages?
@@ -92,4 +92,11 @@ Another way is to combine the results from all the jobs, eg:
 job2:
 needs: job1
 
-Will this wait for all the jobs to complete?
+Will this wait for all the jobs to complete? Yes, it works brilliantly
+
+Following the maven dir structure:
+src/main/java
+src/test/java
+src/cicd/bash
+src/cicd/groovy
+src/cicd/pipeline
