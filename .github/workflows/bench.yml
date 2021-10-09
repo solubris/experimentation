@@ -18,6 +18,10 @@ on:
         description: Size of data set, comma delimited for multiple
         required: false
         default: '1,10,100,1000,10000,100000,1000000,10000000'
+      publish:
+        description: Should the results be published?
+        required: false
+        default: 'false'
 
 jobs:
   bench:
@@ -44,8 +48,9 @@ jobs:
       with:
         name: JDK.${{ matrix.java }}
         path: target/jmh-report
-  wiki:
+  publish:
     needs: bench
+    if: ${{ github.event.inputs.publish }}=='true'
     runs-on: ubuntu-latest
     name: Update the wiki
     steps:
