@@ -26,13 +26,13 @@ public class CloningBench {
         @Setup(Level.Iteration)
         public void setup() {
             Random random = new Random();
-            smallValue = new SmallValue.Builder()
+            smallValue = SmallValue.builder()
                     .withTheDouble(random.nextDouble())
                     .withTheInt(random.nextInt())
                     .withTheLong(random.nextLong())
                     .withTheString("" + random.nextInt())
                     .build();
-            mediumValue = new MediumValue.Builder()
+            mediumValue = MediumValue.builder()
                     .withDouble1(random.nextDouble())
                     .withDouble2(random.nextDouble())
                     .withInt1(random.nextInt())
@@ -42,7 +42,7 @@ public class CloningBench {
                     .withString1("" + random.nextInt())
                     .withString2("" + random.nextInt())
                     .build();
-            largeValue = new LargeValue.Builder()
+            largeValue = LargeValue.builder()
                     .withDouble1(random.nextDouble())
                     .withDouble2(random.nextDouble())
                     .withDouble3(random.nextDouble())

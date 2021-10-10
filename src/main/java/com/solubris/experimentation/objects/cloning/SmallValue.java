@@ -21,6 +21,10 @@ class SmallValue implements Cloneable {
                 .withTheString(value.getTheString());
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public int getTheInt() {
         return theInt;
     }

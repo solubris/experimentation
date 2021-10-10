@@ -33,6 +33,10 @@ class MediumValue implements Cloneable {
                 .withString2(mediumValue.getString2());
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public int getInt1() {
         return int1;
     }

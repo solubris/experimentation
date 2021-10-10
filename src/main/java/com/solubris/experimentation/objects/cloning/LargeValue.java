@@ -57,6 +57,10 @@ class LargeValue implements Cloneable {
                 .withString4(largeValue.getString4());
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
