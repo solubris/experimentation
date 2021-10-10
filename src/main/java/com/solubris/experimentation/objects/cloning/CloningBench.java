@@ -21,7 +21,7 @@ public class CloningBench {
         public SmallValue smallValue;
         public MediumValue mediumValue;
         public LargeValue largeValue;
-        public int repeat = 100;
+        public int repeat = 10000;
 
         @Setup(Level.Iteration)
         public void setup() {
