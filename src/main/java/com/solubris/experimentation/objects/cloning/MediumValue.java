@@ -21,6 +21,18 @@ class MediumValue implements Cloneable {
         this.string2 = string2;
     }
 
+    public static Builder from(MediumValue mediumValue) {
+        return new Builder()
+                .withInt1(mediumValue.getInt1())
+                .withInt2(mediumValue.getInt2())
+                .withLong1(mediumValue.getLong1())
+                .withLong2(mediumValue.getLong2())
+                .withDouble1(mediumValue.getDouble1())
+                .withDouble2(mediumValue.getDouble2())
+                .withString1(mediumValue.getString1())
+                .withString2(mediumValue.getString2());
+    }
+
     public int getInt1() {
         return int1;
     }
@@ -105,18 +117,6 @@ class MediumValue implements Cloneable {
         private double double2;
         private String string1;
         private String string2;
-
-        public static Builder from(MediumValue mediumValue) {
-            return new Builder()
-                    .withInt1(mediumValue.getInt1())
-                    .withInt2(mediumValue.getInt2())
-                    .withLong1(mediumValue.getLong1())
-                    .withLong2(mediumValue.getLong2())
-                    .withDouble1(mediumValue.getDouble1())
-                    .withDouble2(mediumValue.getDouble2())
-                    .withString1(mediumValue.getString1())
-                    .withString2(mediumValue.getString2());
-        }
 
         public Builder withInt1(int int1) {
             this.int1 = int1;
