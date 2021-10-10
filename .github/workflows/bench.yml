@@ -72,7 +72,7 @@ jobs:
           path: target/all.txt
   publish:
     if: github.event.inputs.publish == 'true'
-    needs: publish
+    needs: combine
     runs-on: ubuntu-latest
     name: Update the wiki
     steps:
