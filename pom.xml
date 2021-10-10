@@ -82,7 +82,9 @@
         <jmh.version>1.33</jmh.version>
         <!-- default values for running benchmarks, these are overridden in the github action -->
         <jmh.benchmark>.*</jmh.benchmark>
+        <jmh.measurementTime>1</jmh.measurementTime>
         <jmh.iterations>2</jmh.iterations>
+        <jmh.warmupTime>1</jmh.warmupTime>
         <jmh.warmupIterations>1</jmh.warmupIterations>
         <jmh.fork>1</jmh.fork>
         <jmh.resultDir>${project.build.directory}/jmh-report</jmh.resultDir>
@@ -136,8 +138,12 @@
                         <classpath />
                         <argument>org.openjdk.jmh.Main</argument>
                         <argument>${jmh.benchmark}</argument>
+                        <argument>-r</argument>
+                        <argument>${jmh.measurementTime}</argument>
                         <argument>-i</argument>
                         <argument>${jmh.iterations}</argument>
+                        <argument>-w</argument>
+                        <argument>${jmh.warmupTime}</argument>
                         <argument>-wi</argument>
                         <argument>${jmh.warmupIterations}</argument>
                         <argument>-f</argument>

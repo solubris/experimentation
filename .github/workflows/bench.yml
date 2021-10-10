@@ -3,17 +3,25 @@ on:
   workflow_dispatch:
     inputs:
       benchmark:
-        description: Which benchmark to run
+        description: Which benchmark to run (regex)
         required: false
         default: '.*'
+      measurement-time:
+        description: Time spent for each measurement iteration
+        required: false
+        default: '2'
       iterations:
         description: Number of measurement iterations
         required: false
-        default: '3'
+        default: '15'
+      warmup-time:
+        description: Time spent for each warmup iteration
+        required: false
+        default: '2'
       warmup-iterations:
         description: Number of warmup iterations
         required: false
-        default: '3'
+        default: '10'
       size:
         description: Size of data set, comma delimited for multiple
         required: false
@@ -28,7 +36,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        java: [8, 11, 16, 17]
+        java: [8, 11, 14, 17]
         os: [ubuntu-latest] #[ubuntu-18.04, windows-2019, macos-10.15]
       fail-fast: false
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
@@ -42,7 +50,7 @@ jobs:
         cache: maven
     - name: Build and test with Maven
       run: |
-        mvn compile exec:exec -Dmaven.compiler.source=${{ matrix.java }} -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.params="size=${{ github.event.inputs.size }}"
+        mvn compile exec:exec -Dmaven.compiler.source=${{ matrix.java }} -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.measurementTime=${{ github.event.inputs.measurementTime }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.warmupTime=${{ github.event.inputs.warmup-time }} -Djmh.params="size=${{ github.event.inputs.size }}"
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
