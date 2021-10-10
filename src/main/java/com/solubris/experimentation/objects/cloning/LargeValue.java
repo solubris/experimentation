@@ -37,6 +37,25 @@ class LargeValue implements Cloneable {
         this.string4 = string4;
     }
 
+    public LargeValue(LargeValue origValue) {
+        this.int1 = origValue.int1;
+        this.int2 = origValue.int2;
+        this.int3 = origValue.int3;
+        this.int4 = origValue.int4;
+        this.long1 = origValue.long1;
+        this.long2 = origValue.long2;
+        this.long3 = origValue.long3;
+        this.long4 = origValue.long4;
+        this.double1 = origValue.double1;
+        this.double2 = origValue.double2;
+        this.double3 = origValue.double3;
+        this.double4 = origValue.double4;
+        this.string1 = origValue.string1;
+        this.string2 = origValue.string2;
+        this.string3 = origValue.string3;
+        this.string4 = origValue.string4;
+    }
+
     public static Builder from(LargeValue largeValue) {
         return new Builder()
                 .withInt1(largeValue.getInt1())

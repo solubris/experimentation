@@ -93,7 +93,7 @@ public class CloningBench {
                 blackhole.consume(newValue);
             }
         },
-        COPY {
+        COPY_WITH_BUILDER {
             public void runSmall(TheState state, Blackhole blackhole) {
                 SmallValue origValue = state.smallValue;
                 SmallValue newValue = SmallValue.from(origValue).build();
@@ -113,6 +113,31 @@ public class CloningBench {
             public void runLarge(TheState state, Blackhole blackhole) {
                 LargeValue origValue = state.largeValue;
                 LargeValue newValue = LargeValue.from(origValue).build();
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+        },
+        COPY_WITH_CONSTRUCTOR {
+            public void runSmall(TheState state, Blackhole blackhole) {
+                SmallValue origValue = state.smallValue;
+                SmallValue newValue = new SmallValue(origValue);
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+
+            public void runMedium(TheState state, Blackhole blackhole) {
+                MediumValue origValue = state.mediumValue;
+                MediumValue newValue = new MediumValue(origValue);
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+
+            public void runLarge(TheState state, Blackhole blackhole) {
+                LargeValue origValue = state.largeValue;
+                LargeValue newValue = new LargeValue(origValue);
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);

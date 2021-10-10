@@ -13,6 +13,13 @@ class SmallValue implements Cloneable {
         this.theString = theString;
     }
 
+    public SmallValue(SmallValue origValue) {
+        this.theInt = origValue.theInt;
+        this.theLong = origValue.theLong;
+        this.theDouble = origValue.theDouble;
+        this.theString = origValue.theString;
+    }
+
     public static Builder from(SmallValue value) {
         return new Builder()
                 .withTheInt(value.getTheInt())

@@ -21,6 +21,17 @@ class MediumValue implements Cloneable {
         this.string2 = string2;
     }
 
+    public MediumValue(MediumValue origValue) {
+        this.int1 = origValue.int1;
+        this.int2 = origValue.int2;
+        this.long1 = origValue.long1;
+        this.long2 = origValue.long2;
+        this.double1 = origValue.double1;
+        this.double2 = origValue.double2;
+        this.string1 = origValue.string1;
+        this.string2 = origValue.string2;
+    }
+
     public static Builder from(MediumValue mediumValue) {
         return new Builder()
                 .withInt1(mediumValue.getInt1())
