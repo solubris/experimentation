@@ -50,7 +50,7 @@ jobs:
         path: target/jmh-report
   publish:
     needs: bench
-    if: ${{ github.event.inputs.publish }}=='true'
+    if: github.event.inputs.publish == 'true'
     runs-on: ubuntu-latest
     name: Update the wiki
     steps:
