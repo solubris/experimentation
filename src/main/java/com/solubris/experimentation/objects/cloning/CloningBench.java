@@ -96,7 +96,6 @@ public class CloningBench {
         COPY_WITH_BUILDER_ALL_ARGS {
             public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
                 SmallValue origValue = state.smallValue;
-//                SmallValue newValue = state.smallValueBuilder.with(origValue).build();
                 SmallValue newValue = SmallValue.from(origValue).buildByAllArgConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -122,7 +121,6 @@ public class CloningBench {
         COPY_WITH_BUILDER_CONSTRUCTOR {
             public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
                 SmallValue origValue = state.smallValue;
-//                SmallValue newValue = state.smallValueBuilder.with(origValue).build();
                 SmallValue newValue = SmallValue.from(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -170,7 +168,7 @@ public class CloningBench {
                 blackhole.consume(newValue);
             }
         },
-        COPY_WITH_CONSTRUCTOR {
+        COPY_WITH_COPY_CONSTRUCTOR {
             public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
                 SmallValue origValue = state.smallValue;
                 SmallValue newValue = new SmallValue(origValue);
@@ -190,6 +188,62 @@ public class CloningBench {
             public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
                 LargeValue origValue = state.largeValue;
                 LargeValue newValue = new LargeValue(origValue);
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+        },
+        COPY_WITH_ALL_ARG_CONSTRUCTOR {
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
+                SmallValue origValue = state.smallValue;
+                SmallValue newValue = new SmallValue(
+                        origValue.getTheInt(),
+                        origValue.getTheLong(),
+                        origValue.getTheDouble(),
+                        origValue.getTheString()
+                );
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
+                MediumValue origValue = state.mediumValue;
+                MediumValue newValue = new MediumValue(
+                        origValue.getInt1(),
+                        origValue.getInt2(),
+                        origValue.getLong1(),
+                        origValue.getLong2(),
+                        origValue.getDouble1(),
+                        origValue.getDouble2(),
+                        origValue.getString1(),
+                        origValue.getString2()
+                );
+                assert newValue != origValue;
+                assert newValue.equals(origValue);
+                blackhole.consume(newValue);
+            }
+
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
+                LargeValue origValue = state.largeValue;
+                LargeValue newValue = new LargeValue(
+                        origValue.getInt1(),
+                        origValue.getInt2(),
+                        origValue.getInt3(),
+                        origValue.getInt4(),
+                        origValue.getLong1(),
+                        origValue.getLong2(),
+                        origValue.getLong3(),
+                        origValue.getLong4(),
+                        origValue.getDouble1(),
+                        origValue.getDouble2(),
+                        origValue.getDouble3(),
+                        origValue.getDouble4(),
+                        origValue.getString1(),
+                        origValue.getString2(),
+                        origValue.getString3(),
+                        origValue.getString4()
+                );
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);

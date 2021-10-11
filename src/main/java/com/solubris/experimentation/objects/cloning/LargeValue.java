@@ -76,23 +76,7 @@ class LargeValue implements Cloneable {
     }
 
     public static Builder from(LargeValue largeValue) {
-        return new Builder()
-                .withInt1(largeValue.getInt1())
-                .withInt2(largeValue.getInt2())
-                .withInt3(largeValue.getInt3())
-                .withInt4(largeValue.getInt4())
-                .withLong1(largeValue.getLong1())
-                .withLong2(largeValue.getLong2())
-                .withLong3(largeValue.getLong3())
-                .withLong4(largeValue.getLong4())
-                .withDouble1(largeValue.getDouble1())
-                .withDouble2(largeValue.getDouble2())
-                .withDouble3(largeValue.getDouble3())
-                .withDouble4(largeValue.getDouble4())
-                .withString1(largeValue.getString1())
-                .withString2(largeValue.getString2())
-                .withString3(largeValue.getString3())
-                .withString4(largeValue.getString4());
+        return new Builder().with(largeValue);
     }
 
     public static Builder builder() {

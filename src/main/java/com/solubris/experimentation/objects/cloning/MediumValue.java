@@ -44,15 +44,7 @@ class MediumValue implements Cloneable {
     }
 
     public static Builder from(MediumValue mediumValue) {
-        return new Builder()
-                .withInt1(mediumValue.getInt1())
-                .withInt2(mediumValue.getInt2())
-                .withLong1(mediumValue.getLong1())
-                .withLong2(mediumValue.getLong2())
-                .withDouble1(mediumValue.getDouble1())
-                .withDouble2(mediumValue.getDouble2())
-                .withString1(mediumValue.getString1())
-                .withString2(mediumValue.getString2());
+        return new Builder().with(mediumValue);
     }
 
     public static Builder builder() {
