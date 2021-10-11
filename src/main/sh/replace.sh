@@ -8,17 +8,15 @@ set -eo pipefail
 
 sp=$(dirname "$0")
 
-bench_files=($*)
+bench_file=$1
 
-echo "replacing blocks for: ${bench_files[*]}"
+echo "replacing blocks for: ${bench_file}"
 pwd
 set
 
 echo "dry run=$DRY_RUN"
 
-for bench_file in ${bench_files[*]}; do
-  for md_file in **/*.md; do
-    echo "replacing blocks for $bench_file in $md_file"
-    "$sp"/replace_code_blocks.sh "$bench_file" "$md_file"
-  done
+for md_file in **/*.md; do
+  echo "replacing blocks for $bench_file in $md_file"
+  "$sp"/replace_code_blocks.sh "$bench_file" "$md_file"
 done

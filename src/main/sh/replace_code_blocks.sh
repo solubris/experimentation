@@ -11,9 +11,9 @@ echo "replacing blocks for $bench_file in $md_file"
 # Handle the different ways of running `sed` without generating a backup file based on OS
 # - GNU sed (Linux) uses `-i`
 # - BSD sed (macOS) uses `-i ''`
-SED_OPTIONS=(-i -e)
+SED_OPTIONS=(-i)
 case "$(uname)" in
-Darwin*) SED_OPTIONS=(-i "" -e) ;;
+Darwin*) SED_OPTIONS=(-i "") ;;
 esac
 
 # multiline match to find full code block ```bench::...```
@@ -34,6 +34,11 @@ for benchmark_block in ${benchmark_blocks[*]}; do
 # only include lines for the benchmark_block
 # also include the first line which has the columns
 sed -n -E "1p;/$benchmark_block/p" $bench_file > $bench_file.block
+
+if [ "$(wc -l "$bench_file.block")" -le 1 ]; then
+  echo "no results for $benchmark_block, not updating"
+  continue
+fi
 
 # remove text after start of block
 # read from $bench_file and append after start of block
