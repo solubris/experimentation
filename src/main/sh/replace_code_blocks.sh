@@ -35,7 +35,8 @@ for benchmark_block in ${benchmark_blocks[*]}; do
 # also include the first line which has the columns
 sed -n -E "1p;/$benchmark_block/p" $bench_file > $bench_file.block
 
-if [ "$(wc -l "$bench_file.block")" -le 1 ]; then
+# XXX must use pipe on wc otherwise it prints the filename
+if [ "$(wc -l < "$bench_file.block")" -le 1 ]; then
   echo "no results for $benchmark_block, not updating"
   continue
 fi

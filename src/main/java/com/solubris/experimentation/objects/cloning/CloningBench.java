@@ -9,8 +9,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.Random;
 
-@Warmup(iterations = 4)
-@Measurement(iterations = 3)
+@Warmup(iterations = 1)
+@Measurement(iterations = 10, time = 1)
 public class CloningBench {
 
     @State(Scope.Benchmark)
@@ -31,7 +31,7 @@ public class CloningBench {
                     .withTheInt(random.nextInt())
                     .withTheLong(random.nextLong())
                     .withTheString("" + random.nextInt())
-                    .build();
+                    .buildByAllArgConstructor();
             mediumValue = MediumValue.builder()
                     .withDouble1(random.nextDouble())
                     .withDouble2(random.nextDouble())
@@ -96,7 +96,8 @@ public class CloningBench {
         COPY_WITH_BUILDER {
             public void runSmall(TheState state, Blackhole blackhole) {
                 SmallValue origValue = state.smallValue;
-                SmallValue newValue = SmallValue.from(origValue).build();
+//                SmallValue newValue = state.smallValueBuilder.with(origValue).build();
+                SmallValue newValue = SmallValue.from(origValue).buildByAllArgConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
