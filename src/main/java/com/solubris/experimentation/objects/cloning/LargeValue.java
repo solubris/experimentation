@@ -56,6 +56,25 @@ class LargeValue implements Cloneable {
         this.string4 = origValue.string4;
     }
 
+    public LargeValue(Builder builder) {
+        this.int1 = builder.int1;
+        this.int2 = builder.int2;
+        this.int3 = builder.int3;
+        this.int4 = builder.int4;
+        this.long1 = builder.long1;
+        this.long2 = builder.long2;
+        this.long3 = builder.long3;
+        this.long4 = builder.long4;
+        this.double1 = builder.double1;
+        this.double2 = builder.double2;
+        this.double3 = builder.double3;
+        this.double4 = builder.double4;
+        this.string1 = builder.string1;
+        this.string2 = builder.string2;
+        this.string3 = builder.string3;
+        this.string4 = builder.string4;
+    }
+
     public static Builder from(LargeValue largeValue) {
         return new Builder()
                 .withInt1(largeValue.getInt1())
@@ -303,8 +322,32 @@ class LargeValue implements Cloneable {
             return this;
         }
 
-        public LargeValue build() {
+        public Builder with(LargeValue value) {
+            this.int1 = value.int1;
+            this.int2 = value.int2;
+            this.int3 = value.int3;
+            this.int4 = value.int4;
+            this.long1 = value.long1;
+            this.long2 = value.long2;
+            this.long3 = value.long3;
+            this.long4 = value.long4;
+            this.double1 = value.double1;
+            this.double2 = value.double2;
+            this.double3 = value.double3;
+            this.double4 = value.double4;
+            this.string1 = value.string1;
+            this.string2 = value.string2;
+            this.string3 = value.string3;
+            this.string4 = value.string4;
+            return this;
+        }
+
+        public LargeValue buildByAllArgConstructor() {
             return new LargeValue(int1, int2, int3, int4, long1, long2, long3, long4, double1, double2, double3, double4, string1, string2, string3, string4);
+        }
+
+        public LargeValue buildByBuilderConstructor() {
+            return new LargeValue(this);
         }
     }
 }

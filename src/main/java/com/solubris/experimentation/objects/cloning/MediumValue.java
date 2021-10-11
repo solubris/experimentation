@@ -32,6 +32,17 @@ class MediumValue implements Cloneable {
         this.string2 = origValue.string2;
     }
 
+    public MediumValue(Builder builder) {
+        this.int1 = builder.int1;
+        this.int2 = builder.int2;
+        this.long1 = builder.long1;
+        this.long2 = builder.long2;
+        this.double1 = builder.double1;
+        this.double2 = builder.double2;
+        this.string1 = builder.string1;
+        this.string2 = builder.string2;
+    }
+
     public static Builder from(MediumValue mediumValue) {
         return new Builder()
                 .withInt1(mediumValue.getInt1())
@@ -173,8 +184,24 @@ class MediumValue implements Cloneable {
             return this;
         }
 
-        public MediumValue build() {
+        public Builder with(MediumValue value) {
+            this.int1 = value.int1;
+            this.int2 = value.int2;
+            this.long1 = value.long1;
+            this.long2 = value.long2;
+            this.double1 = value.double1;
+            this.double2 = value.double2;
+            this.string1 = value.string1;
+            this.string2 = value.string2;
+            return this;
+        }
+
+        public MediumValue buildByAllArgConstructor() {
             return new MediumValue(int1, int2, long1, long2, double1, double2, string1, string2);
+        }
+
+        public MediumValue buildByBuilderConstructor() {
+            return new MediumValue(this);
         }
     }
 }

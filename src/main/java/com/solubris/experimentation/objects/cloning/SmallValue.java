@@ -28,11 +28,7 @@ class SmallValue implements Cloneable {
     }
 
     public static Builder from(SmallValue value) {
-        return new Builder()
-                .withTheInt(value.getTheInt())
-                .withTheLong(value.getTheLong())
-                .withTheDouble(value.getTheDouble())
-                .withTheString(value.getTheString());
+        return new Builder().with(value);
     }
 
     public static Builder builder() {
@@ -112,6 +108,14 @@ class SmallValue implements Cloneable {
 
         public Builder withTheString(String theString) {
             this.theString = theString;
+            return this;
+        }
+
+        public Builder with(SmallValue value) {
+            this.theInt = value.theInt;
+            this.theLong = value.theLong;
+            this.theDouble = value.theDouble;
+            this.theString = value.theString;
             return this;
         }
 
