@@ -18,12 +18,13 @@ esac
 
 # multiline match to find full code block ```bench::...```
 function replace() {
+  # TODO want exact match on $1 - escape it?
   sed -E "${SED_OPTIONS[@]}" '
-/```bench::/{
+/```bench::'"$1"'/{
   :b
   /```$/!{N;bb
   }
-  '"$1"'
+  '"$2"'
 }' "$md_file"
 }
 
@@ -34,7 +35,7 @@ for benchmark_block in ${benchmark_blocks[*]}; do
   echo "replacing block: $benchmark_block"
   # only include lines for the benchmark_block
   # also include the first line which has the columns
-  sed -n -E "1p;/$benchmark_block/p" $bench_file > $bench_file.block
+  sed -n -E "1p;/$benchmark_block/p" "$bench_file" > "$bench_file.block"
 
   # XXX must use pipe on wc otherwise it prints the filename
   if [ "$(wc -l < "$bench_file.block")" -le 1 ]; then
@@ -45,14 +46,14 @@ for benchmark_block in ${benchmark_blocks[*]}; do
 # remove text after start of block
 # read from $bench_file and append after start of block
 # append ``` to complete the block as it was removed earlier
-replace \
-'s/(```bench::'$benchmark_block').*```/\1/;{r'$bench_file.block'
+replace "$benchmark_block" \
+'s/(```bench::'"$benchmark_block"').*```/\1/;{r'"$bench_file.block"'
 a\
 ```
 }
 '
 
-rm -f $bench_file.block
+rm -f "$bench_file.block"
 
 done
 
