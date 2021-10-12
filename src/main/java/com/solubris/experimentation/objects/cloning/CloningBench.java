@@ -18,48 +18,50 @@ public class CloningBench {
         @Param
         public Strategy strategy;
 
-        public SmallValue smallValue;
-        public MediumValue mediumValue;
-        public LargeValue largeValue;
         public int repeat = 10000;
+        public SmallValue[] smallValues = new SmallValue[repeat];
+        public MediumValue[] mediumValues = new MediumValue[repeat];
+        public LargeValue[] largeValues = new LargeValue[repeat];
 
         @Setup(Level.Iteration)
         public void setup() {
             Random random = new Random();
-            smallValue = SmallValue.builder()
-                    .withTheDouble(random.nextDouble())
-                    .withTheInt(random.nextInt())
-                    .withTheLong(random.nextLong())
-                    .withTheString("" + random.nextInt())
-                    .buildByAllArgConstructor();
-            mediumValue = MediumValue.builder()
-                    .withDouble1(random.nextDouble())
-                    .withDouble2(random.nextDouble())
-                    .withInt1(random.nextInt())
-                    .withInt2(random.nextInt())
-                    .withLong1(random.nextLong())
-                    .withLong2(random.nextLong())
-                    .withString1("" + random.nextInt())
-                    .withString2("" + random.nextInt())
-                    .buildByAllArgConstructor();
-            largeValue = LargeValue.builder()
-                    .withDouble1(random.nextDouble())
-                    .withDouble2(random.nextDouble())
-                    .withDouble3(random.nextDouble())
-                    .withDouble4(random.nextDouble())
-                    .withInt1(random.nextInt())
-                    .withInt2(random.nextInt())
-                    .withInt3(random.nextInt())
-                    .withInt4(random.nextInt())
-                    .withLong1(random.nextLong())
-                    .withLong2(random.nextLong())
-                    .withLong3(random.nextLong())
-                    .withLong4(random.nextLong())
-                    .withString1("" + random.nextInt())
-                    .withString2("" + random.nextInt())
-                    .withString3("" + random.nextInt())
-                    .withString4("" + random.nextInt())
-                    .buildByAllArgConstructor();
+            for (int i = 0; i < repeat; i++) {
+                smallValues[i] = SmallValue.builder()
+                        .withTheDouble(random.nextDouble())
+                        .withTheInt(random.nextInt())
+                        .withTheLong(random.nextLong())
+                        .withTheString("" + random.nextInt())
+                        .buildByAllArgConstructor();
+                mediumValues[i] = MediumValue.builder()
+                        .withDouble1(random.nextDouble())
+                        .withDouble2(random.nextDouble())
+                        .withInt1(random.nextInt())
+                        .withInt2(random.nextInt())
+                        .withLong1(random.nextLong())
+                        .withLong2(random.nextLong())
+                        .withString1("" + random.nextInt())
+                        .withString2("" + random.nextInt())
+                        .buildByAllArgConstructor();
+                largeValues[i] = LargeValue.builder()
+                        .withDouble1(random.nextDouble())
+                        .withDouble2(random.nextDouble())
+                        .withDouble3(random.nextDouble())
+                        .withDouble4(random.nextDouble())
+                        .withInt1(random.nextInt())
+                        .withInt2(random.nextInt())
+                        .withInt3(random.nextInt())
+                        .withInt4(random.nextInt())
+                        .withLong1(random.nextLong())
+                        .withLong2(random.nextLong())
+                        .withLong3(random.nextLong())
+                        .withLong4(random.nextLong())
+                        .withString1("" + random.nextInt())
+                        .withString2("" + random.nextInt())
+                        .withString3("" + random.nextInt())
+                        .withString4("" + random.nextInt())
+                        .buildByAllArgConstructor();
+            }
         }
 
         @TearDown(Level.Iteration)
@@ -69,24 +71,24 @@ public class CloningBench {
 
     public enum Strategy {
         CLONE {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = origValue.clone();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = origValue.clone();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = origValue.clone();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -94,24 +96,24 @@ public class CloningBench {
             }
         },
         COPY_WITH_BUILDER_ALL_ARGS {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = SmallValue.from(origValue).buildByAllArgConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = MediumValue.from(origValue).buildByAllArgConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = LargeValue.from(origValue).buildByAllArgConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -119,24 +121,24 @@ public class CloningBench {
             }
         },
         COPY_WITH_BUILDER_CONSTRUCTOR {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = SmallValue.from(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = MediumValue.from(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = LargeValue.from(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -144,24 +146,24 @@ public class CloningBench {
             }
         },
         COPY_WITH_REUSABLE_BUILDER {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = builder.with(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = builder.with(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = builder.with(origValue).buildByBuilderConstructor();
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -169,24 +171,24 @@ public class CloningBench {
             }
         },
         COPY_WITH_COPY_CONSTRUCTOR {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = new SmallValue(origValue);
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = new MediumValue(origValue);
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = new LargeValue(origValue);
                 assert newValue != origValue;
                 assert newValue.equals(origValue);
@@ -194,8 +196,8 @@ public class CloningBench {
             }
         },
         COPY_WITH_ALL_ARG_CONSTRUCTOR {
-            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder) {
-                SmallValue origValue = state.smallValue;
+            public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
+                SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = new SmallValue(
                         origValue.getTheInt(),
                         origValue.getTheLong(),
@@ -207,8 +209,8 @@ public class CloningBench {
                 blackhole.consume(newValue);
             }
 
-            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder) {
-                MediumValue origValue = state.mediumValue;
+            public void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i) {
+                MediumValue origValue = state.mediumValues[i];
                 MediumValue newValue = new MediumValue(
                         origValue.getInt1(),
                         origValue.getInt2(),
@@ -224,8 +226,8 @@ public class CloningBench {
                 blackhole.consume(newValue);
             }
 
-            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder) {
-                LargeValue origValue = state.largeValue;
+            public void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i) {
+                LargeValue origValue = state.largeValues[i];
                 LargeValue newValue = new LargeValue(
                         origValue.getInt1(),
                         origValue.getInt2(),
@@ -250,18 +252,18 @@ public class CloningBench {
             }
         };
 
-        public abstract void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder);
+        public abstract void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i);
 
-        public abstract void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder);
+        public abstract void runMedium(TheState state, Blackhole blackhole, MediumValue.Builder builder, int i);
 
-        public abstract void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder);
+        public abstract void runLarge(TheState state, Blackhole blackhole, LargeValue.Builder builder, int i);
     }
 
     @Benchmark
     public void small(TheState state, Blackhole blackhole) {
         SmallValue.Builder smallValueBuilder = SmallValue.builder();
         for (int i = 0; i < state.repeat; i++) {
-            state.strategy.runSmall(state, blackhole, smallValueBuilder);
+            state.strategy.runSmall(state, blackhole, smallValueBuilder, i);
         }
     }
 
@@ -269,7 +271,7 @@ public class CloningBench {
     public void medium(TheState state, Blackhole blackhole) {
         MediumValue.Builder mediumValueBuilder = MediumValue.builder();
         for (int i = 0; i < state.repeat; i++) {
-            state.strategy.runMedium(state, blackhole, mediumValueBuilder);
+            state.strategy.runMedium(state, blackhole, mediumValueBuilder, i);
         }
     }
 
@@ -277,7 +279,7 @@ public class CloningBench {
     public void large(TheState state, Blackhole blackhole) {
         LargeValue.Builder largeValueBuilder = LargeValue.builder();
         for (int i = 0; i < state.repeat; i++) {
-            state.strategy.runLarge(state, blackhole, largeValueBuilder);
+            state.strategy.runLarge(state, blackhole, largeValueBuilder, i);
         }
     }
 
