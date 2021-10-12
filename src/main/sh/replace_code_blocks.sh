@@ -32,10 +32,18 @@ function replace() {
 benchmark_blocks=($(sed -n -E 's/```bench::(.*)$/\1/p' "$md_file"))
 
 for benchmark_block in ${benchmark_blocks[*]}; do
-  echo "replacing block: $benchmark_block"
+  benchmark_block_escaped=$benchmark_block
+  benchmark_block_escaped=${benchmark_block_escaped//./\\.}
+  benchmark_block_escaped=${benchmark_block_escaped//\*/\\*}
+  benchmark_block_escaped=${benchmark_block_escaped//(/\\(}
+  benchmark_block_escaped=${benchmark_block_escaped//)/\\)}
+  benchmark_block_escaped=${benchmark_block_escaped//|/\\|}
+  echo "replacing block: $benchmark_block, escaped: $benchmark_block_escaped"
+
   # only include lines for the benchmark_block
   # also include the first line which has the columns
   sed -n -E "1p;/$benchmark_block/p" "$bench_file" > "$bench_file.block"
+  cat "$bench_file.block"
 
   # XXX must use pipe on wc otherwise it prints the filename
   if [ "$(wc -l < "$bench_file.block")" -le 1 ]; then
@@ -46,8 +54,8 @@ for benchmark_block in ${benchmark_blocks[*]}; do
 # remove text after start of block
 # read from $bench_file and append after start of block
 # append ``` to complete the block as it was removed earlier
-replace "$benchmark_block" \
-'s/(```bench::'"$benchmark_block"').*```/\1/;{r'"$bench_file.block"'
+replace "$benchmark_block_escaped" \
+'s/(```bench::'"$benchmark_block_escaped"').*```/\1/;{r'"$bench_file.block"'
 a\
 ```
 }
