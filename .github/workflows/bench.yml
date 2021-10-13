@@ -5,7 +5,6 @@ on:
       benchmark:
         description: Which benchmark to run (regex)
         required: false
-        default: '.*'
       iteration-time:
         description: Time spent for each measurement/warmup iteration
         required: false
@@ -53,7 +52,15 @@ jobs:
     - name: Build and test with Maven
       run: mvn compile exec:exec
         -Dmaven.compiler.source=${{ matrix.java }}
-        -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.measurementTime=${{ github.event.inputs.iteration-time }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.warmupTime=${{ github.event.inputs.iteration-time }} -Djmh.params="size=${{ github.event.inputs.size }}" -Djmh.extra.flag=${{ github.event.inputs.extra-flag }} -Djmh.extra.value=${{ github.event.inputs.extra-value }}
+        -Dmaven.compiler.target=${{ matrix.java }}
+        -Djmh.benchmark=${{ github.event.inputs.benchmark }}
+        -Djmh.measurementTime=${{ github.event.inputs.iteration-time }}
+        -Djmh.iterations=${{ github.event.inputs.iterations }}
+        -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }}
+        -Djmh.warmupTime=${{ github.event.inputs.iteration-time }}
+        -Djmh.params="size=${{ github.event.inputs.size }}"
+        -Djmh.extra.flag=${{ github.event.inputs.extra-flag }}
+        -Djmh.extra.value=${{ github.event.inputs.extra-value }}
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
@@ -70,8 +77,7 @@ jobs:
         with:
           path: target
       - name: Combine results into one file
-        run: |
-          $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
+        run: $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
       - name: Archive combined jmh report
         uses: actions/upload-artifact@v2
         with:
