@@ -90,16 +90,6 @@
         <jmh.resultDir>${project.build.directory}/jmh-report</jmh.resultDir>
         <jmh.resultFormat>TEXT</jmh.resultFormat>
         <jmh.params>size=100000</jmh.params>
-
-        <!--
-            Java source/target to use for compilation.
-          -->
-<!--        <javac.target>1.8</javac.target>-->
-
-        <!--
-            Name of the benchmark Uber-JAR to generate.
-          -->
-        <uberjar.name>streams</uberjar.name>
     </properties>
 
     <build>
@@ -155,6 +145,17 @@
                         <argument>-p</argument>
                         <argument>${jmh.params}</argument>
 <!-- Use a profiler
+                        Supported profilers:
+                        cl: Classloader profiling via standard MBeans
+                        comp: JIT compiler profiling via standard MBeans
+                        gc: GC profiling via standard MBeans
+                        jfr: Java Flight Recorder profiler
+                        pauses: Pauses profiler
+                        perfc2c: Linux perf c2c profiler
+                        safepoints: Safepoints profiler
+                        stack: Simple and naive Java stack profiler
+-->
+<!--
                         <argument>-prof</argument>
                         <argument>jfr</argument>
 -->
