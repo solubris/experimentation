@@ -132,7 +132,7 @@ public class CloningBench {
                 assert newValue.equals(origValue);
             }
         },
-        BUILDER_COPY_WITH_CONSTRUCTOR {
+        BUILDER_COPY_ONE_ARG {
             public void runSmall(TheState state, Blackhole blackhole, SmallValue.Builder builder, int i) {
                 SmallValue origValue = state.smallValues[i];
                 SmallValue newValue = SmallValue.from(origValue).buildByBuilderConstructor();
