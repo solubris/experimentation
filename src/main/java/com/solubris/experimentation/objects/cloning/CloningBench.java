@@ -31,7 +31,7 @@ public class CloningBench {
                         .withTheDouble(random.nextDouble())
                         .withTheInt(random.nextInt())
                         .withTheLong(random.nextLong())
-                        .withTheString("" + random.nextInt())
+                        .withTheString(Integer.toString(random.nextInt()))
                         .buildByAllArgConstructor();
                 mediumValues[i] = MediumValue.builder()
                         .withDouble1(random.nextDouble())
@@ -40,8 +40,8 @@ public class CloningBench {
                         .withInt2(random.nextInt())
                         .withLong1(random.nextLong())
                         .withLong2(random.nextLong())
-                        .withString1("" + random.nextInt())
-                        .withString2("" + random.nextInt())
+                        .withString1(Integer.toString(random.nextInt()))
+                        .withString2(Integer.toString(random.nextInt()))
                         .buildByAllArgConstructor();
                 largeValues[i] = LargeValue.builder()
                         .withDouble1(random.nextDouble())
@@ -56,10 +56,10 @@ public class CloningBench {
                         .withLong2(random.nextLong())
                         .withLong3(random.nextLong())
                         .withLong4(random.nextLong())
-                        .withString1("" + random.nextInt())
-                        .withString2("" + random.nextInt())
-                        .withString3("" + random.nextInt())
-                        .withString4("" + random.nextInt())
+                        .withString1(Integer.toString(random.nextInt()))
+                        .withString2(Integer.toString(random.nextInt()))
+                        .withString3(Integer.toString(random.nextInt()))
+                        .withString4(Integer.toString(random.nextInt()))
                         .buildByAllArgConstructor();
             }
         }
