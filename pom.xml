@@ -90,6 +90,12 @@
         <jmh.resultDir>${project.build.directory}/jmh-report</jmh.resultDir>
         <jmh.resultFormat>TEXT</jmh.resultFormat>
         <jmh.params>size=100000</jmh.params>
+        <jmh.extra.flag/>
+        <jmh.extra.value/>
+<!--
+        <jmh.extra.flag>-prof</jmh.extra.flag>
+        <jmh.extra.value>gc</jmh.extra.value>
+-->
     </properties>
 
     <build>
@@ -155,10 +161,8 @@
                         safepoints: Safepoints profiler
                         stack: Simple and naive Java stack profiler
 -->
-<!--
-                        <argument>-prof</argument>
-                        <argument>jfr</argument>
--->
+                        <argument>${jmh.extra.flag}</argument>
+                        <argument>${jmh.extra.value}</argument>
                     </arguments>
                 </configuration>
             </plugin>

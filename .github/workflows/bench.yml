@@ -26,6 +26,12 @@ on:
         description: Should the results be published?
         required: false
         default: 'false'
+      extra-flag:
+        description: Extra flag passed to JMH
+        required: false
+      extra-value:
+        description: Extra value passed to JMH
+        required: false
 
 jobs:
   bench:
@@ -45,8 +51,9 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build and test with Maven
-      run: |
-        mvn compile exec:exec -Dmaven.compiler.source=${{ matrix.java }} -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.measurementTime=${{ github.event.inputs.iteration-time }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.warmupTime=${{ github.event.inputs.iteration-time }} -Djmh.params="size=${{ github.event.inputs.size }}"
+      run: mvn compile exec:exec \
+        -Dmaven.compiler.source=${{ matrix.java }} \
+        -Dmaven.compiler.target=${{ matrix.java }} -Djmh.benchmark=${{ github.event.inputs.benchmark }} -Djmh.measurementTime=${{ github.event.inputs.iteration-time }} -Djmh.iterations=${{ github.event.inputs.iterations }} -Djmh.warmupIterations=${{ github.event.inputs.warmup-iterations }} -Djmh.warmupTime=${{ github.event.inputs.iteration-time }} -Djmh.params="size=${{ github.event.inputs.size }} -Djmh.extra.flag=${{ github.event.inputs.extra-flag }} -Djmh.extra.value=${{ github.event.inputs.extra-value }}
     - name: Archive jmh reports
       uses: actions/upload-artifact@v2
       with:
