@@ -1,5 +1,6 @@
 package com.solubris.experimentation.streams.building;
 
+import com.solubris.experimentation.JmhHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.runner.Runner;

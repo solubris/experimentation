@@ -1,4 +1,4 @@
-package com.solubris.experimentation.streams.building;
+package com.solubris.experimentation;
 
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.options.Options;
@@ -16,14 +16,14 @@ public class JmhHelper {
         return new OptionsBuilder()
                 .include(aClass.getSimpleName())
                 .forks(1)
-                .warmupIterations(1)
+                .warmupIterations(3)
                 .warmupTime(TimeValue.milliseconds(1000))
-                .measurementIterations(1)
-                .measurementTime(TimeValue.microseconds(1000))
+                .measurementIterations(10)
+                .measurementTime(TimeValue.milliseconds(1000))
 //                .addProfiler("gc")
                 .jvmArgs("-ea")
-                .resultFormat(ResultFormatType.TEXT)
-                .result(TARGET_JMH_REPORT + aClass.getSimpleName() + ".txt")
+                .resultFormat(ResultFormatType.JSON)
+                .result(TARGET_JMH_REPORT + aClass.getSimpleName() + ".json")
                 .build();
     }
 

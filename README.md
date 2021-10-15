@@ -10,6 +10,10 @@ Run a specific bench:
 
     mvn clean compile exec:exec -Djmh.benchmark=CloningBench
 
+Run with a profiler:
+
+    mvn clean compile exec:exec -Djmh.extra.flag=-prof -Djmh.extra.value=jfr
+
 ### GitHub Action
 
 There is a github action which can be triggered manually to run the benchmarks:

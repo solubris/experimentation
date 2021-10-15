@@ -1,23 +1,10 @@
 package com.solubris.experimentation.streams.building;
 
+import com.solubris.experimentation.JmhHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
 import static com.solubris.experimentation.streams.building.ArrayBuilderBench.arrayListToArray;
 import static com.solubris.experimentation.streams.building.ArrayBuilderBench.streamBuilderToArray;
