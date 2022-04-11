@@ -62,7 +62,7 @@ jobs:
         -Djmh.extra.flag=${{ github.event.inputs.extra-flag }}
         -Djmh.extra.value=${{ github.event.inputs.extra-value }}
     - name: Archive jmh reports
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: JDK.${{ matrix.java }}
         path: target/jmh-report
@@ -79,7 +79,7 @@ jobs:
       - name: Combine results into one file
         run: $GITHUB_WORKSPACE/src/main/sh/combine.sh $GITHUB_WORKSPACE/target
       - name: Archive combined jmh report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: all
           path: target/all.txt
