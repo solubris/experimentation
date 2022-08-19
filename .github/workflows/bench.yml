@@ -73,7 +73,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Retrieve saved results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: target
       - name: Combine results into one file
@@ -96,7 +96,7 @@ jobs:
         repository: ${{ github.repository }}.wiki
         path: wiki
     - name: Retrieve saved results
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: all
         path: target
