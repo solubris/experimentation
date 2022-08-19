@@ -42,7 +42,7 @@ jobs:
       fail-fast: false
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v3.3.0
       with:
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Combine the results
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Retrieve saved results
         uses: actions/download-artifact@v3
         with:
@@ -89,9 +89,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Update the wiki
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Checkout wiki
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{ github.repository }}.wiki
         path: wiki
